@@ -3992,6 +3992,7 @@ input:checked + .toggleSwitchSlider:before {
  * W. https://svgartista.net
  **************************************************/
 
+/* 
 svg .svg-elem-1 {
   stroke-dashoffset: 1265.34716796875px;
   stroke-dasharray: 1265.34716796875px;
@@ -4171,3 +4172,4 @@ svg.active .svg-elem-12 {
   stroke-dashoffset: 0;
   fill: rgb(9, 64, 115);
 }
+*/
