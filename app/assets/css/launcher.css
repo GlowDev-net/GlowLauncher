@@ -3991,7 +3991,7 @@ input:checked + .toggleSwitchSlider:before {
  * MIT license (https://opensource.org/licenses/MIT)
  * W. https://svgartista.net
  **************************************************/
-
+/*
 svg .svg-elem-1 {
   stroke-dashoffset: 1265.34716796875px;
   stroke-dasharray: 1265.34716796875px;
@@ -4170,4 +4170,4 @@ svg .svg-elem-12 {
 svg.active .svg-elem-12 {
   stroke-dashoffset: 0;
   fill: rgb(9, 64, 115);
-}
+} */

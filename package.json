@@ -3,11 +3,11 @@
   "version": "2.4.0",
   "productName": "GlowLauncher",
   "description": "サーバーMODの導入を簡単にできるランチャーです。",
-  "author": "Glow.Dev (https://github.com/hikaru2070/)",
+  "author": "Glow.Dev (https://github.com/GlowDev-net/)",
   "license": "UNLICENSED",
-  "homepage": "https://github.com/hikaru2070/GlowLauncher",
+  "homepage": "https://github.com/GlowDev-net/GlowLauncher",
   "bugs": {
-    "url": "https://github.com/hikaru2070/GlowLauncher/issues"
+    "url": "https://github.com/GlowDev-net/GlowLauncher/issues"
   },
   "private": true,
   "main": "index.js",
@@ -47,6 +47,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hikaru2070/GlowLauncher.git"
+    "url": "git+https://github.com/GlowDev-net/GlowLauncher.git"
   }
 }
