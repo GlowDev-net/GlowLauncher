@@ -3114,6 +3114,30 @@ input:checked + .toggleSwitchSlider:before {
     height: 45px;
 }
 
+#settingsFileSystemSVG {
+    stroke: #ffffff;
+    height: 30px;
+    width: 40px;
+}
+.mediaButton:hover #settingsFileSystemSVG,
+.mediaButton:focus #settingsFileSystemSVG,
+.mediaButton:active #settingsFileSystemSVG {
+    height: 40px;
+}
+
+#deleteFileSystemSVG {
+    stroke: #ffffff;
+    height: 30px;
+    width: 30px;
+}
+
+.mediaButton:hover #deleteFileSystemSVG,
+.mediaButton:focus #deleteFileSystemSVG,
+.mediaButton:active #deleteFileSystemSVG {
+    width: 35px;
+    height: 35px;
+}
+
 /* Settings tooltip styles. */
 #settingsTooltip {
     visibility: hidden;
