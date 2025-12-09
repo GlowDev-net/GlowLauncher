@@ -3138,6 +3138,17 @@ input:checked + .toggleSwitchSlider:before {
     height: 35px;
 }
 
+#settingsReportIssueSVG {
+    stroke: #ffffff;
+    height: 30px;
+    width: 40px;
+}
+.mediaButton:hover #settingsReportIssueSVG,
+.mediaButton:focus #settingsReportIssueSVG,
+.mediaButton:active #settingsReportIssueSVG {
+    height: 40px;
+}
+
 /* Settings tooltip styles. */
 #settingsTooltip {
     visibility: hidden;

@@ -690,6 +690,15 @@ document.getElementById('deleteFileSystemSVG').onclick = async () => {
 }
 
 /**
+ * Open Issue Report Page on Default Browser
+ */
+
+document.getElementById('settingsReportIssueButton').onclick = async () => {
+    const { shell } = require('electron')
+    shell.openExternal('https://forms.cloud.microsoft/r/GLkSrRwju0')
+}
+
+/**
  * News Loading Functions
  */
 
