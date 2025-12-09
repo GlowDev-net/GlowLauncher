@@ -6,6 +6,7 @@ on:
       - dev
     tags:
       - 'v*.*.*'
+  workflow_dispatch:
 
 
 permissions:
