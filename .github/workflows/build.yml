@@ -60,7 +60,7 @@ jobs:
           name: ${{ runner.os }}-release
           path: |
             dist/latest*.yml
-            dist/GlowLauncher-setup-${{ steps.get_version.outputs.version-without-v }}*
+            dist/GlowLauncher-setup-${{ inputs.ver_num }}*
 
   release:
     runs-on: ubuntu-latest
