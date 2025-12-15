@@ -1,12 +1,17 @@
 name: Build
 
 on: 
-  push:
-    branches-ignore:
-      - dev
-    tags:
-      - 'v*.*.*'
   workflow_dispatch:
+    inputs:
+      ver_num:
+        description: 'Version Number'
+        type: string
+        required: true
+      prerelease:
+        description: 'Is this build is pre-release?'
+        required: false
+        type: boolean
+
 
 
 permissions:
@@ -19,7 +24,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - name: Check out Git repository
@@ -78,17 +83,17 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ steps.get_version.outputs.version }}
-          name: GlowLauncher - ${{ steps.get_version.outputs.version }}
+          tag_name: ${{ inputs.ver_num }}
+          name: GlowLauncher - ${{ inputs.ver_num }}
           body: |
             ### ▼ご使用のOSのインストーラーをダウンロードしてください。
-            [Windows](https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.version }}/GlowLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.exe)
-            [Linux](https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.version }}/GlowLauncher-setup-${{ steps.get_version.outputs.version-without-v }}.Appimage)
+            [Windows](https://github.com/${{ github.repository }}/releases/download/${{ inputs.ver_num }}/GlowLauncher-setup-${{ inputs.ver_num }}.exe)
+            [Linux](https://github.com/${{ github.repository }}/releases/download/${{ inputs.ver_num }}/GlowLauncher-setup-${{ inputs.ver_num }}.Appimage)
 
             ### ビルド情報
-            ${{ steps.get_version.outputs.version }} by ${{ github.actor }}
+            ${{ inputs.ver_num }} by ${{ github.actor }}
           draft: false
-          prerelease: false
+          prerelease: ${{ inputs.prerelease }}
           files: |
             dist/**/latest*.yml
-            dist/**/GlowLauncher-setup-${{ steps.get_version.outputs.version-without-v }}*
+            dist/**/GlowLauncher-setup-${{ inputs.ver_num }}*
