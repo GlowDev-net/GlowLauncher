@@ -60,7 +60,7 @@ jobs:
           name: ${{ runner.os }}-release
           path: |
             dist/latest*.yml
-            dist/GlowLauncher-setup-${{ inputs.ver_num }}*
+            dist/GlowLauncher-setup-${{ inputs.ver_num }} *
 
   release:
     runs-on: ubuntu-latest
@@ -88,6 +88,8 @@ jobs:
           body: |
             ### ▼ご使用のOSのインストーラーをダウンロードしてください。
             [Windows](https://github.com/${{ github.repository }}/releases/download/${{ inputs.ver_num }}/GlowLauncher-setup-${{ inputs.ver_num }}.exe)
+            [MacOS arm64](https://github.com/${{ github.repository }}/releases/download/${{ inputs.ver_num }}/GlowLauncher-setup-${{ inputs.ver_num }}-arm64.dmg)
+            [MacOS x64](https://github.com/${{ github.repository }}/releases/download/${{ inputs.ver_num }}/GlowLauncher-setup-${{ inputs.ver_num }}-x64.dmg)
             [Linux](https://github.com/${{ github.repository }}/releases/download/${{ inputs.ver_num }}/GlowLauncher-setup-${{ inputs.ver_num }}.Appimage)
 
             ### ビルド情報
