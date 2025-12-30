@@ -30,6 +30,7 @@ const {
 // Internal Requirements
 const DiscordWrapper          = require('./assets/js/discordwrapper')
 const ProcessBuilder          = require('./assets/js/processbuilder')
+const fs                      = require('fs-extra')
 
 // Launch Elements
 const launch_content          = document.getElementById('launch_content')
@@ -656,7 +657,7 @@ document.getElementById('deleteFileSystemSVG').onclick = async () => {
 
     setOverlayContent(
         'フォルダを削除しますか?',
-        `${removeOrderNumber(serv.rawServer.name)}の関連フォルダを削除します。ドロップインMODやスクリーンショットも削除されます。この操作は元に戻せません。`,
+        `${removeOrderNumber(serv.rawServer.name)}の関連フォルダを削除します。ドロップインMODやスクリーンショットも削除されます。この操作は元に戻せません。削除するフォルダーは${CACHE_SETTINGS_MODS_DIR}です。`,
         'キャンセル',
         '削除する'
     )
@@ -1085,4 +1086,158 @@ async function loadNews(){
     })
 
     return await promise
+}
+
+
+//=====================================================
+//
+//            move JourneyMap Directory 
+//
+//=====================================================
+
+// landing.js 内の初期化処理付近に追加
+document.getElementById('movejourneymapButton').onclick = async () => {
+    // 1. まず CurseForge フォルダから journeymap を持つインスタンスを探す
+    const directories = await getJourneyMapPaths();
+
+    if (directories.length === 0) {
+        // 対象が見つからない場合は警告を出して終了
+        setOverlayContent(
+            'データが見つかりません',
+            'CurseForgeのInstancesフォルダ内にJourneyMapのデータが見つかりませんでした。',
+            '閉じる'
+        );
+        setOverlayHandler(() => toggleOverlay(false));
+        toggleOverlay(true);
+        return;
+    }
+
+    // 2. ディレクトリが存在すれば、選択画面（ステップ1）へ進む
+    showJMSelectStep(directories);
+};
+
+// まずディレクトリリストの取得
+const path_on = require('path');
+const os_on = require('os');
+
+/**
+ * CurseForgeの全インスタンスからjourneymapフォルダを持つものを取得する
+ * @returns {Promise<Array>} {name: インスタンス名, fullName: フルパス} の配列
+ */
+async function getJourneyMapPaths() {
+    const userHome = os_on.homedir();
+    // CurseForgeのインスタンス保存先パス
+    const baseInstancesPath = path_on.join(userHome, 'curseforge', 'minecraft', 'Instances');
+    
+    let foundDirs = [];
+
+    try {
+        // 1. Instancesディレクトリが存在するか確認
+        if (!(await fs.pathExists(baseInstancesPath))) {
+            console.warn("CurseForgeのInstancesディレクトリが見つかりません。");
+            return [];
+        }
+
+        // 2. ディレクトリ内の一覧を取得
+        const entries = await fs.readdir(baseInstancesPath, { withFileTypes: true });
+        
+        for (const entry of entries) {
+            // フォルダのみを対象にする
+            if (entry.isDirectory()) {
+                const jmPath = path_on.join(baseInstancesPath, entry.name, 'journeymap');
+                
+                // 3. そのインスタンスの中に「journeymap」フォルダがあるか確認
+                if (await fs.pathExists(jmPath)) {
+                    foundDirs.push({
+                        name: entry.name,  // セレクトボックスの表示名 (例: MyModpack)
+                        fullName: jmPath    // 実際の移動処理に使うフルパス
+                    });
+                }
+            }
+        }
+    } catch (err) {
+        console.error("ディレクトリ一覧の取得中にエラーが発生しました:", err);
+    }
+
+    return foundDirs;
+}
+
+
+/**
+ * ステップ1: ディレクトリ選択画面
+ */
+function showJMSelectStep(directories) {
+    // UIの切り替え
+    document.getElementById('overlayLabels').style.display = 'none'
+    document.getElementById('jmSelectStep').style.display = 'block'
+    
+    setOverlayContent('ディレクトリの選択', 'JourneyMapのコピー元を選択してください。', 'つぎへ', 'キャンセル');
+
+    const selectEl = document.getElementById('jmInstanceSelect')
+    const nextBtn = document.getElementById('jmNextStepBtn')
+    const cancelBtn = document.getElementById('jmCancelStepBtn') // ★追加
+
+    // セレクトボックスの中身を生成
+    selectEl.innerHTML = '<option value="" disabled selected>-- インスタンスを選択してください --</option>';
+    directories.forEach(dir => {
+        const el = document.createElement('option')
+        el.value = dir.fullName
+        el.textContent = dir.name
+        selectEl.appendChild(el)
+    });
+
+    // ★キャンセルボタンの挙動：オーバーレイを閉じる
+    setDismissHandler(null)
+
+    // 「つぎへ」ボタンの挙動
+    setOverlayHandler(() => {
+        (async () => {
+            const selectedValue = selectEl.value
+            if (!selectedValue) return
+
+          showJMConfirmStep(selectedValue)
+        })()
+    });
+
+    toggleOverlay(true, true)
+    toggleLaunchArea(false)
+}
+
+/**
+ * ステップ2: 最終確認と実行
+ */
+async function showJMConfirmStep(sourcePath) {
+    // カスタムエリアを隠し、通常のボタンエリアを戻す
+    document.getElementById('jmSelectStep').style.display = 'none';
+    document.getElementById('overlayLabels').style.display = 'flex';
+
+    const serv = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer());
+    const destPath = path_on.join(ConfigManager.getInstanceDirectory(), serv.rawServer.id, 'journeymap');
+
+    // 最終確認画面
+    setOverlayContent(
+        'JourneyMapをコピーしますか?',
+        `以下の場所からデータを上書きコピーします。<br><br>${sourcePath}<br><b>から<b><br>${destPath}<br><b>へ<b><br>`,
+        '実行する',
+        'キャンセル'
+    );
+
+    // 実行ボタン（左）
+    setOverlayHandler(async () => {
+        try {
+            await fs.copy(sourcePath, destPath, { overwrite: true });
+            setOverlayContent('完了', 'JourneyMapの移行に成功しました。', '閉じる', '');
+            setOverlayHandler(() => toggleOverlay(false));
+            setDismissHandler(null);
+        } catch (err) {
+            console.error(err);
+            setOverlayContent('エラー', 'コピーに失敗しました。', '閉じる', '');
+            setOverlayHandler(() => toggleOverlay(false));
+        }
+    });
+
+    // キャンセルボタン（右）
+    setDismissHandler(() => {
+        toggleOverlay(false);
+    });
 }

@@ -31,11 +31,35 @@
         <span id="overlayTitle">Lorem Ipsum:<br>Finis Illud</span>
         <span id="overlayDesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud..</span>
         <div id="overlayActionContainer">
+            <div id="jmSelectStep" style="display:none; margin: 20px 0; text-align: center;">
+            <select id="jmInstanceSelect" style="width: 80%; padding: 10px; border-radius: 4px; background: #222; color: white; border: 1px solid #444; font-size: 16px;">
+                <option value="" disabled selected>-- インスタンスを選択してください --</option>
+            </select>
+            </div>
             <button id="overlayAcknowledge" class="overlayKeybindEnter">Conare Iterum</button>
             <div id="overlayDismissWrapper">
                 <button id="overlayDismiss" style="display: none;" class="overlayKeybindEsc">Dismiss</button>
             </div>
         </div>
     </div>
+
+    <div id="overlayContent">
+    <h1 id="overlayTitle"></h1>
+    <p id="overlayDesc"></p>
+    <div id="jmSelectStep" style="display:none; margin: 20px 0; text-align: center;">
+    <select id="jmInstanceSelect" style="width: 80%; padding: 10px; border-radius: 4px; background: #222; color: white; border: 1px solid #444; font-size: 16px;">
+        <option value="" disabled selected>-- インスタンスを選択してください --</option>
+    </select>
+    <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+        <button id="jmCancelStepBtn" class="overlayButton" style="width: 100px; background-color: #444;">キャンセル</button>
+        <button id="jmNextStepBtn" class="overlayButton" style="width: 100px;">つぎへ</button>
+    </div>
+</div>
+
+    <div class="overlayLabels" id="overlayLabels">
+        <button id="overlayAcknowledge"></button>
+        <button id="overlayDismiss"></button>
+    </div>
+</div>
     <script src="./assets/js/scripts/overlay.js"></script>
 </div>

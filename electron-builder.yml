@@ -2,7 +2,7 @@ appId: 'glowlauncher'
 productName: 'GlowLauncher'
 artifactName: '${productName}-setup-${version}.${ext}'
 
-copyright: 'Copyright © 2018-2025 Daniel Scalzi Modded by Glow.Dev'
+copyright: 'Copyright © 2018-2025 Daniel Scalzi Modded by GlowDev'
 
 asar: true
 compression: 'maximum'
@@ -39,8 +39,8 @@ mac:
 # Linux Configuration
 linux: 
   target: 'AppImage'
-  maintainer: 'Daniel Scalzi & Glow.Dev'
-  vendor: 'Daniel Scalzi Glow.Dev'
+  maintainer: 'Daniel Scalzi & GlowDev'
+  vendor: 'Daniel Scalzi GlowDev'
   synopsis: 'Minecraft Modランチャー'
   description: 'サーバーMODの導入を簡単にできるランチャーです'
   category: 'Game'

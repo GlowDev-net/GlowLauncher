@@ -12,6 +12,8 @@ const semver                            = require('semver')
 const { pathToFileURL }                 = require('url')
 const { AZURE_CLIENT_ID, MSFT_OPCODE, MSFT_REPLY_TYPE, MSFT_ERROR, SHELL_OPCODE } = require('./app/assets/js/ipcconstants')
 const LangLoader                        = require('./app/assets/js/langloader')
+const fse                               = require('fs-extra');
+const os                                = require('os');
 
 // Setup Lang
 LangLoader.setupLanguage()
@@ -359,3 +361,22 @@ app.on('activate', () => {
         createWindow()
     }
 })
+
+// add move
+
+ipcMain.handle('get-instances', async () => {
+    const instancesPath = path.join(os.homedir(), 'curseforge', 'minecraft', 'Instances');
+    
+    try {
+        // ディレクトリ内の項目を取得し、フォルダのみを抽出
+        const files = await fs.readdir(instancesPath, { withFileTypes: true });
+        const directories = files
+            .filter(dirent => dirent.isDirectory())
+            .map(dirent => dirent.name);
+        
+        return directories;
+    } catch (err) {
+        console.error("フォルダ一覧の取得に失敗しました:", err);
+        return [];
+    }
+});
