@@ -15,7 +15,6 @@ extraResources:
 
 # Windows Configuration
 win: 
-  publish: github
   target: 
     - target: 'nsis'
       arch: 'x64'
