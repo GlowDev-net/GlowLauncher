@@ -15,6 +15,7 @@ extraResources:
 
 # Windows Configuration
 win: 
+  publish: always
   target: 
     - target: 'nsis'
       arch: 'x64'
